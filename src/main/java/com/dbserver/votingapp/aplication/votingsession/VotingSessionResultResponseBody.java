@@ -9,7 +9,7 @@ public class VotingSessionResultResponseBody {
     private Long votesAgainst;
     private Long votesInFavor;
     private Long totalVotes;
-    private Long assemblyId;
+    private Long votingSessionId;
     private VotingSessionResult result;
 
 }

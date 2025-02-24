@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 
-    Long countByAssemblyAssemblyIdAndVoteType(Long assemblyId, VoteType voteType);
+    Long countByVotingSessionIdAndVoteType(Long votingSessionId, VoteType voteType);
 
 }

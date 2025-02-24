@@ -2,6 +2,7 @@ package com.dbserver.votingapp.domain.service;
 
 import com.dbserver.votingapp.aplication.votingsession.CreateVotingSessionRequestBody;
 import com.dbserver.votingapp.aplication.votingsession.VotingSessionResultResponseBody;
+import com.dbserver.votingapp.domain.model.agenda.AgendaEntity;
 import com.dbserver.votingapp.domain.model.votingsession.VotingSessionEntity;
 import com.dbserver.votingapp.domain.model.votingsession.VotingSessionStatus;
 import com.dbserver.votingapp.domain.repository.AgendaRepository;
@@ -19,19 +20,24 @@ public class VotingSessionService {
     private AgendaRepository agendaRepository;
     private VoteService voteService;
 
-    public void createAssembly(CreateVotingSessionRequestBody requestBody) {
+    public Long createVotingSession(CreateVotingSessionRequestBody requestBody) {
+        AgendaEntity agendaEntity = agendaRepository.findById(requestBody.getAgendaId())
+                .orElseThrow(() -> new RuntimeException("Agenda not found with id: " + requestBody.getAgendaId() + "."));
+
         VotingSessionEntity votingSessionEntity = votingSessionMapper.toEntity(requestBody);
-        votingSessionEntity.setAgenda(agendaRepository.findById(requestBody.getAgendaId()).get());
-        votingSessionRepository.save(votingSessionEntity);
+        votingSessionEntity.setAgenda(agendaEntity);
+
+        VotingSessionEntity savedEntity = votingSessionRepository.save(votingSessionEntity);
+        return savedEntity.getId();
     }
 
-    public VotingSessionResultResponseBody finishAssembly(Long id) {
-        VotingSessionEntity votingSessionEntity = votingSessionRepository.findById(id).get();
-
+    public VotingSessionResultResponseBody getVotingSessionResult(Long id) {
+        VotingSessionEntity votingSessionEntity = votingSessionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Voting session not found with id: " + id + "."));
 
         votingSessionEntity.setStatus(VotingSessionStatus.FINISHED);
         votingSessionRepository.save(votingSessionEntity);
-        return voteService.getAssemblyVotes(id);
+        return voteService.getVotingSessionVotes(id);
     }
 
 }

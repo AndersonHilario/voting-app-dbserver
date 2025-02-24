@@ -16,6 +16,6 @@ public interface VoteMapper {
 
     @Mapping(target = "totalVotes", expression = "java(votesInFavor + votesAgainst)")
     @Mapping(target = "result", expression = "java(((votesInFavor - votesAgainst) > 0) ? com.dbserver.votingapp.domain.model.votingsession.VotingSessionResult.APPROVED : com.dbserver.votingapp.domain.model.votingsession.VotingSessionResult.REJECTED)")
-    VotingSessionResultResponseBody toDto(Long votesAgainst, Long votesInFavor, Long assemblyId);
+    VotingSessionResultResponseBody toDto(Long votesAgainst, Long votesInFavor, Long votingSessionId);
 
 }

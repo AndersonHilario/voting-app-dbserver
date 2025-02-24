@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "vote", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"assembly_id", "associate_id"})
+        @UniqueConstraint(columnNames = {"voting_session_id", "associate_id"})
 })
 public class VoteEntity {
 

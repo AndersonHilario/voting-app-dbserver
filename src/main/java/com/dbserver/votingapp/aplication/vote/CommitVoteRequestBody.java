@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class CommitVoteRequestBody {
 
-    private Long assemblyId;
+    private Long votingSessionId;
     private Long associateId;
     private VoteType voteType;
     private LocalDateTime votedAt;

@@ -18,8 +18,8 @@ public class AgendaService {
     private AssociateRepository associateRepository;
 
     public Long createAgenda(CreateAgendaRequestBody requestBody) {
-        AssociateEntity associateEntity = associateRepository.findById(requestBody.getCreatedBy())
-                .orElseThrow(() -> new RuntimeException("Associate not found"));
+        AssociateEntity associateEntity = associateRepository.findById(requestBody.getAssociateId())
+                .orElseThrow(() -> new RuntimeException("Associate not found with id: " + requestBody.getAssociateId() + "."));
 
         AgendaEntity agendaEntity = mapper.toEntity(requestBody);
         agendaEntity.setCreatedBy(associateEntity);

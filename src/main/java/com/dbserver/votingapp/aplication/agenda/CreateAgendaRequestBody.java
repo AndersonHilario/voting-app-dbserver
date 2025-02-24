@@ -7,6 +7,6 @@ public class CreateAgendaRequestBody {
 
     private String name;
     private String description;
-    private Long createdBy;
+    private Long associateId;
 
 }

@@ -22,19 +22,24 @@ public class VoteService {
     private AssociateRepository associateRepository;
     private VoteRepository voteRepository;
 
-    public void commitVote(CommitVoteRequestBody requestBody) {
-        VotingSessionEntity votingSessionEntity = votingSessionRepository.findById(requestBody.getAssemblyId()).get();
-        AssociateEntity associateEntity = associateRepository.findById(requestBody.getAssociateId()).get();
+    public Long commitVote(CommitVoteRequestBody requestBody) {
+        VotingSessionEntity votingSessionEntity = votingSessionRepository.findById(requestBody.getVotingSessionId())
+                .orElseThrow(() -> new RuntimeException("Voting session not found with id: " + requestBody.getVotingSessionId() + "."));
+
+        AssociateEntity associateEntity = associateRepository.findById(requestBody.getAssociateId())
+                .orElseThrow(() -> new RuntimeException("Associate not found with id: " + requestBody.getAssociateId() + "."));
 
         VoteEntity voteEntity = mapper.toEntity(requestBody);
         voteEntity.setVotingSession(votingSessionEntity);
         voteEntity.setAssociate(associateEntity);
-        voteRepository.save(voteEntity);
+
+        VoteEntity savedEntity = voteRepository.save(voteEntity);
+        return savedEntity.getId();
     }
 
-    public VotingSessionResultResponseBody getAssemblyVotes(Long assemblyId) {
-        Long against = voteRepository.countByAssemblyAssemblyIdAndVoteType(assemblyId, VoteType.AGAINST);
-        Long favor = voteRepository.countByAssemblyAssemblyIdAndVoteType(assemblyId, VoteType.FAVOR);
-        return mapper.toDto(against, favor, assemblyId);
+    public VotingSessionResultResponseBody getVotingSessionVotes(Long votingSessionId) {
+        Long against = voteRepository.countByVotingSessionIdAndVoteType(votingSessionId, VoteType.AGAINST);
+        Long favor = voteRepository.countByVotingSessionIdAndVoteType(votingSessionId, VoteType.FAVOR);
+        return mapper.toDto(against, favor, votingSessionId);
     }
 }

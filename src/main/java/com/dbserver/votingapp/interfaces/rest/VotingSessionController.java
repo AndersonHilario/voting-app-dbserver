@@ -9,26 +9,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/assemblies")
 @AllArgsConstructor
+@RequestMapping("/voting-sessions")
 public class VotingSessionController {
 
     private VotingSessionService service;
 
     @PostMapping("/create-voting-session")
     public ResponseEntity<String> createAssociate(@RequestBody CreateVotingSessionRequestBody requestBody) {
-        service.createAssembly(requestBody);
+        Long votingSessionId = service.createVotingSession(requestBody);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body("Voting Session created successfully");
+                .body("Voting Session created successfully! Voting Session Id: " + votingSessionId + ".");
     }
 
     @GetMapping("/{votingSessionId}/get-voting-session-result")
-    public ResponseEntity<VotingSessionResultResponseBody> finisAssembly(@PathVariable Long votingSessionId) {
+    public ResponseEntity<VotingSessionResultResponseBody> getVotingSessionResult(@PathVariable Long votingSessionId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(service.finishAssembly(votingSessionId));
+                .body(service.getVotingSessionResult(votingSessionId));
     }
 
 }
