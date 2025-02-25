@@ -6,6 +6,7 @@ import com.dbserver.votingapp.domain.model.votingsession.VotingSessionEntity;
 import com.dbserver.votingapp.domain.model.associate.AssociateEntity;
 import com.dbserver.votingapp.domain.model.vote.VoteEntity;
 import com.dbserver.votingapp.domain.model.vote.VoteType;
+import com.dbserver.votingapp.domain.model.votingsession.VotingSessionResult;
 import com.dbserver.votingapp.domain.repository.VotingSessionRepository;
 import com.dbserver.votingapp.domain.repository.AssociateRepository;
 import com.dbserver.votingapp.domain.repository.VoteRepository;
@@ -46,6 +47,12 @@ public class VoteService {
         log.info("Getting voting session {} votes.", votingSessionId);
         Long against = voteRepository.countByVotingSessionIdAndVoteType(votingSessionId, VoteType.AGAINST);
         Long favor = voteRepository.countByVotingSessionIdAndVoteType(votingSessionId, VoteType.FAVOR);
-        return mapper.toDto(against, favor, votingSessionId);
+        VotingSessionResultResponseBody dto = mapper.toDto(against, favor, votingSessionId);
+
+        if (dto.getVotesInFavor() - dto.getVotesAgainst() == 0) {
+            dto.setResult(VotingSessionResult.TIE);
+        }
+
+        return dto;
     }
 }

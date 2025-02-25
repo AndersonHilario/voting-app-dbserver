@@ -4,6 +4,6 @@ public enum VotingSessionResult {
 
     APPROVED,
     REJECTED,
-    PENDING
+    TIE
 
 }

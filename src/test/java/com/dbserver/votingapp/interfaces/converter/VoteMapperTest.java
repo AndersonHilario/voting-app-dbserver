@@ -47,6 +47,6 @@ class VoteMapperTest {
                 voteMapper.toDto(votesAgainst, votesInFavor, votingSessionId);
 
         assertEquals(10L, response.getTotalVotes());
-        assertEquals(VotingSessionResult.REJECTED, response.getResult());
+        assertEquals(VotingSessionResult.TIE, response.getResult());
     }
 }
