@@ -7,8 +7,10 @@ import com.dbserver.votingapp.domain.repository.AgendaRepository;
 import com.dbserver.votingapp.domain.repository.AssociateRepository;
 import com.dbserver.votingapp.interfaces.converter.AgendaMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AgendaService {
@@ -24,6 +26,7 @@ public class AgendaService {
         AgendaEntity agendaEntity = mapper.toEntity(requestBody);
         agendaEntity.setCreatedBy(associateEntity);
 
+        log.info("Creating new agenda with name: {}", agendaEntity.getName());
         AgendaEntity savedEntity = repository.save(agendaEntity);
         return savedEntity.getId();
     }

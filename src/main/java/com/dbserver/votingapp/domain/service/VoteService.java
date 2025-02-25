@@ -11,8 +11,10 @@ import com.dbserver.votingapp.domain.repository.AssociateRepository;
 import com.dbserver.votingapp.domain.repository.VoteRepository;
 import com.dbserver.votingapp.interfaces.converter.VoteMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class VoteService {
@@ -33,11 +35,13 @@ public class VoteService {
         voteEntity.setVotingSession(votingSessionEntity);
         voteEntity.setAssociate(associateEntity);
 
+        log.info("Commiting {}'s vote in voting session {}.", associateEntity.getName(), votingSessionEntity.getName());
         VoteEntity savedEntity = voteRepository.save(voteEntity);
         return savedEntity.getId();
     }
 
     public VotingSessionResultResponseBody getVotingSessionVotes(Long votingSessionId) {
+        log.info("Getting voting session {} votes.", votingSessionId);
         Long against = voteRepository.countByVotingSessionIdAndVoteType(votingSessionId, VoteType.AGAINST);
         Long favor = voteRepository.countByVotingSessionIdAndVoteType(votingSessionId, VoteType.FAVOR);
         return mapper.toDto(against, favor, votingSessionId);
