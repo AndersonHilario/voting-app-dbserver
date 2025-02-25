@@ -13,6 +13,7 @@ import com.dbserver.votingapp.interfaces.converter.VoteMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -24,6 +25,7 @@ public class VoteService {
     private AssociateRepository associateRepository;
     private VoteRepository voteRepository;
 
+    @Transactional
     public Long commitVote(CommitVoteRequestBody requestBody) {
         VotingSessionEntity votingSessionEntity = votingSessionRepository.findById(requestBody.getVotingSessionId())
                 .orElseThrow(() -> new RuntimeException("Voting session not found with id: " + requestBody.getVotingSessionId() + "."));

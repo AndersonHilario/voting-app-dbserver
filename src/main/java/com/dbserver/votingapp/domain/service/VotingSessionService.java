@@ -10,6 +10,7 @@ import com.dbserver.votingapp.domain.repository.VotingSessionRepository;
 import com.dbserver.votingapp.interfaces.converter.VotingSessionMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -20,6 +21,7 @@ public class VotingSessionService {
     private AgendaRepository agendaRepository;
     private VoteService voteService;
 
+    @Transactional
     public Long createVotingSession(CreateVotingSessionRequestBody requestBody) {
         AgendaEntity agendaEntity = agendaRepository.findById(requestBody.getAgendaId())
                 .orElseThrow(() -> new RuntimeException("Agenda not found with id: " + requestBody.getAgendaId() + "."));

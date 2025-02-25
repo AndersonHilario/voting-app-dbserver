@@ -9,6 +9,7 @@ import com.dbserver.votingapp.interfaces.converter.AgendaMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -19,6 +20,7 @@ public class AgendaService {
     private AgendaRepository repository;
     private AssociateRepository associateRepository;
 
+    @Transactional
     public Long createAgenda(CreateAgendaRequestBody requestBody) {
         AssociateEntity associateEntity = associateRepository.findById(requestBody.getAssociateId())
                 .orElseThrow(() -> new RuntimeException("Associate not found with id: " + requestBody.getAssociateId() + "."));
